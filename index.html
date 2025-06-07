@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Fee Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1><span class="icon">🏀</span> Bricklayer <span class="icon">🏀</span></h1>
+            <h2>Monthly Fee & Reporting</h2>
+        </header>
+
+        <main class="main-layout">
+
+            <div class="column" id="left-column">
+
+                <section class="card">
+                    <div class="card-header">
+                        <h2>Team Members (<span id="member-count">0</span>)</h2>
+                        <div class="member-actions">
+                            <button id="open-roster-btn" class="btn-small">Add from Roster</button>
+                            <button id="add-member-btn" class="btn-small">Add New Guest</button>
+                        </div>
+                    </div>
+                    <div id="member-list" class="member-list"></div>
+                </section>
+
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>Manage Monthly Ad-Hoc Sessions</h2>
+                            <p class="card-subtitle">
+                                <span id="adhoc-unique-count">0</span> unique players, 
+                                <span id="adhoc-session-count">0</span> total sessions
+                            </p>
+                        </div>
+                    </div>
+                    <p class="card-description">
+                        Add players after each session. The list is saved to your browser automatically when you add, remove, or use the buttons below.
+                    </p>
+                    <div class="add-adhoc-form">
+                        <input type="text" id="adhoc-name-input" placeholder="Ad-Hoc Player's Name">
+                        <input type="date" id="adhoc-date-input">
+                        <button id="add-adhoc-btn" class="btn">Add Session</button>
+                    </div>
+                    <ul id="adhoc-list" class="item-list managed-list"></ul>
+                    <div class="adhoc-actions">
+                        <button id="save-adhoc-btn" class="btn">Save List Manually</button>
+                        <button id="clear-adhoc-btn" class="btn btn-secondary">Start New Month (Clear List)</button>
+                    </div>
+                </section>
+
+            </div>
+
+            <div class="column" id="right-column">
+
+                <section class="card">
+                    <div class="card-header">
+                        <h2>Report Management</h2>
+                    </div>
+                    <div id="fee-share-area">
+                        <h3>Monthly Fee Per Member</h3>
+                        <div class="fee-qr-container">
+                            <p id="monthly-fee">0 VND</p>
+                            <img src="https://res.cloudinary.com/duukynapb/image/upload/v1749306691/width_199_id97k5.jpg" alt="Payment QR Code" id="qr-code-img">
+                        </div>
+                    </div>
+                    <button id="share-fee-btn" class="btn"><span class="icon">📸</span> Share Fee & QR</button>
+                    <div class="report-generation-container">
+                        <button id="generate-report-btn" class="btn">Generate Full Monthly Report</button>
+                        <div id="report-output" class="report-output"></div>
+                    </div>
+                    <div id="save-report-wrapper" class="hidden">
+                        <div class="save-report-form">
+                            <input type="text" id="report-name-input" placeholder="e.g., July 2025 Report">
+                            <button id="save-report-btn" class="btn">Save This Report</button>
+                        </div>
+                    </div>
+                    <div class="saved-reports-container">
+                        <h4>Past Reports</h4>
+                        <ul id="saved-reports-list" class="item-list"></ul>
+                    </div>
+                </section>
+            </div>
+        </main> </div> <div id="add-member-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Add New Team Member</h3>
+            <input type="text" id="member-name-input-modal" placeholder="Member's Name">
+            <input type="file" id="member-image-input" accept="image/*">
+            <button id="save-member-btn" class="btn">Save Member</button>
+        </div>
+    </div>
+
+    <div id="roster-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Add Members from Roster</h3>
+            <ul id="roster-list" class="item-list roster-list">
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

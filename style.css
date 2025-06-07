@@ -1,0 +1,607 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;700&display=swap');
+
+body {
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+header h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: 3rem;
+    color: #ff6f00;
+    text-shadow: 2px 2px 4px #000;
+}
+
+header .icon {
+    font-size: 2.5rem;
+}
+
+.calculator-card {
+    background-color: #2c2c2c;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+}
+
+.input-section label {
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.input-section input {
+    width: 80px;
+    padding: 10px;
+    font-size: 1.5rem;
+    text-align: center;
+    border: 2px solid #ff6f00;
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.results-section {
+    margin-top: 20px;
+}
+
+.results-section h3 {
+    color: #ff6f00;
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 1px;
+}
+
+#monthly-fee {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.members-section {
+    background-color: #2c2c2c;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+.member-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px; /* Increased from 20px for more breathing room */
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+.member-avatar-container .member-avatar {
+    width: 110px;  /* Increased from 80px */
+    height: 110px; /* Increased from 80px */
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+    border: 4px solid #ff6f00; /* Made the border slightly thicker */
+}
+
+.member-avatar:hover {
+    transform: scale(1.1);
+}
+
+.btn {
+    background-color: #ff6f00;
+    color: #1a1a1a;
+    font-weight: bold;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #ff8f33;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background-color: #2c2c2c;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-content input[type="text"], .modal-content input[type="file"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: #333;
+    color: #f5f5f5;
+}
+
+.modal-content #save-member-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+/* Card layout for new sections */
+.card {
+    background-color: #2c2c2c;
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #444;
+}
+
+.card-header h2 {
+    margin: 0;
+    color: #ff6f00;
+    font-family: 'Anton', sans-serif;
+}
+
+.btn-small {
+    background-color: #444;
+    color: #f5f5f5;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+}
+.btn-small:hover {
+    background-color: #555;
+}
+
+
+/* Ad-hoc player form */
+.add-adhoc-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.add-adhoc-form input {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: #333;
+    color: #f5f5f5;
+    font-size: 1rem;
+}
+
+/* List for ad-hoc players */
+.item-list {
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.item-list li {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-list .delete-btn {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+/* Report Output Area */
+.report-output {
+    margin-top: 20px;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    text-align: left;
+    display: none; /* Hidden by default */
+}
+
+.report-output h4 {
+    color: #ff6f00;
+    border-bottom: 1px solid #555;
+    padding-bottom: 5px;
+}
+
+.report-output p, .report-output ul {
+    margin-bottom: 15px;
+}
+
+.report-output li {
+    list-style: disc;
+    margin-left: 20px;
+}
+/* Container for each member (avatar + name) */
+.member-avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px; /* Space between avatar and name */
+}
+
+/* Style for the member's name */
+.member-name {
+    color: #f5f5f5;
+    font-weight: bold;
+    font-size: 1.1rem; /* Increased from 0.9rem */
+    text-align: center;
+    margin-top: 4px; /* Added a little extra space from the avatar */
+}
+
+/* Make sure the main list can accommodate the names */
+.member-list {
+    align-items: flex-start; /* Align items to the top */
+}
+/* Styling for the new save report form */
+.save-report-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.save-report-form input {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: #333;
+    color: #f5f5f5;
+    font-size: 1rem;
+}
+
+/* Style for buttons within the saved reports list */
+.saved-reports-actions {
+    display: flex;
+    gap: 10px;
+}
+/* Utility class to hide elements */
+.hidden {
+    display: none;
+}
+
+/* Container for the buttons in the member card header */
+.member-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Make the save button a bit more prominent when it appears */
+#save-report-wrapper {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+}
+
+/* Specific styles for the Roster Modal list */
+.roster-list li {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.roster-list li:hover {
+    background-color: #4a4a4a;
+}
+
+/* Style for members who are already added to the monthly list */
+.roster-list li.added {
+    background-color: #1a1a1a;
+    color: #666;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+.roster-list .roster-member-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.roster-list .roster-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+/* --- Feature 1: Larger Roster Modal --- */
+#roster-modal .modal-content {
+    width: 90%;
+    max-width: 500px; /* Increased max-width */
+}
+
+#roster-modal .roster-list {
+    max-height: 550px; /* Increased max-height */
+    overflow-y: auto;  /* Make it scrollable if list is long */
+}
+
+/* --- Feature 2: Clickable Avatar Effect --- */
+.member-avatar-container .member-avatar {
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.member-avatar-container .member-avatar:hover {
+    transform: scale(1.1);
+    border-color: #ff4d4d; /* Red border on hover to indicate action */
+}
+
+/* --- Feature 3: Report Management Section --- */
+.saved-reports-container {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+}
+
+.saved-reports-container h4 {
+    color: #ff6f00;
+    margin-bottom: 15px;
+}
+/* --- Feature 1: Enhanced Ad-Hoc Player List --- */
+#adhoc-list li {
+    font-size: 1.1rem; /* Makes all text in the list item bigger */
+    padding: 12px 15px;
+}
+
+#adhoc-list li strong {
+    color: #ff6f00; /* Makes the name orange */
+    font-weight: 700;  /* Makes the name bolder */
+}
+
+
+/* --- Feature 2: Fee, QR Code, and Share Button Layout --- */
+
+/* This is the container for the fee and QR code that we will screenshot */
+#fee-share-area {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#fee-share-area h3 {
+    margin: 0 0 10px 0;
+}
+
+.fee-qr-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px; /* Space between fee and QR code */
+    flex-wrap: wrap;
+}
+
+#monthly-fee {
+    font-size: 3rem; /* Make the fee number extra large */
+}
+
+#qr-code-img {
+    width: 130px; /* Control the size of the QR code */
+    height: auto;
+    border-radius: 8px;
+    background-color: white; /* Add a white background in case of transparency */
+}
+
+/* Style for the share button */
+#share-fee-btn {
+    width: 100%;
+    margin-bottom: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+}
+
+/* Container for the generate report button to separate it visually */
+.report-generation-container {
+    padding-top: 20px;
+    border-top: 1px solid #444;
+}
+/* --- Styles for Ad-Hoc Action Buttons --- */
+.adhoc-actions {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+/* A secondary style for less important or destructive buttons */
+.btn.btn-secondary {
+    background-color: #444;
+    color: #f5f5f5;
+}
+
+.btn.btn-secondary:hover {
+    background-color: #555;
+}
+/* --- Styles for the Ad-Hoc Management Section --- */
+
+/* Style for the new descriptive text */
+.card-description {
+    font-size: 0.9rem;
+    color: #ccc;
+    text-align: center;
+    margin: -10px 0 20px 0;
+    font-style: italic;
+}
+
+/* Visually groups the list of players being managed */
+.managed-list {
+    background-color: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 20px;
+    min-height: 50px; /* Ensures the box has a size even when empty */
+}
+/* --- Style for the "Saved!" button state --- */
+
+.btn.saved {
+    background-color: #28a745; /* A satisfying green color */
+    color: white;
+    cursor: default;
+}
+/* NEW: This rule makes ONLY the numbers outstanding */
+.card-subtitle span {
+    font-size: 2.00rem;      /* Make the numbers large */
+    font-weight: 700;       /* Make them bold */
+    color: #ff6f00;        /* Use the theme orange color */
+    margin-right: 4px;      /* Add a little space after the number */
+}
+/* --- RESPONSIVE & MOBILE-FRIENDLY STYLES --- */
+/* These styles will apply only to screens 768px wide or smaller (tablets and phones) */
+
+@media (max-width: 768px) {
+
+    /* --- General Layout & Fonts --- */
+
+    /* Reduce overall padding on the main container for more space */
+    .container {
+        padding: 15px;
+    }
+
+    /* Reduce the main title size */
+    header h1 {
+        font-size: 2.2rem;
+    }
+    header .icon {
+        font-size: 2rem;
+    }
+
+    /* Reduce padding inside all cards */
+    .card {
+        padding: 20px 15px;
+    }
+
+
+    /* --- Member Avatars --- */
+
+    /* Make member profiles slightly smaller on mobile */
+    .member-avatar-container .member-avatar {
+        width: 90px;
+        height: 90px;
+    }
+    .member-name {
+        font-size: 1rem;
+    }
+
+
+    /* --- Form Layouts --- */
+
+    /* Stack the ad-hoc form inputs vertically instead of side-by-side */
+    .add-adhoc-form {
+        flex-direction: column;
+    }
+
+    /* Stack the ad-hoc action buttons for a better fit */
+    .adhoc-actions {
+        flex-direction: column;
+    }
+
+
+    /* --- Report Management & QR Code --- */
+    
+    /* Make the fee number smaller to prevent overflow */
+    #monthly-fee {
+        font-size: 2.5rem;
+    }
+
+    /* Stack the fee and QR code vertically */
+    .fee-qr-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* Make the share button slightly smaller */
+    #share-fee-btn {
+        padding: 15px 20px;
+        font-size: 1rem;
+    }
+
+
+    /* --- Modal Dialogs --- */
+
+    /* Make modals take up more screen width on mobile */
+    .modal-content {
+        width: 90%;
+        margin: 10% auto; /* Reduce top margin */
+        padding: 15px;
+    }
+
+    #roster-modal .roster-list {
+        max-height: 350px; /* Adjust roster height for smaller screens */
+    }
+
+}
+/* --- WIDESCREEN DESKTOP STYLES --- */
+/* These styles will apply only to screens 1024px wide or wider */
+
+@media (min-width: 1024px) {
+
+    /* Allow the main container to be much wider on desktop */
+    .container {
+        max-width: 1280px;
+    }
+
+    /* This is the new two-column layout container */
+    .main-layout {
+        display: flex;
+        gap: 30px; /* Creates space between the two columns */
+        align-items: flex-start; /* Aligns columns to the top */
+    }
+
+    /* Define how the columns should behave */
+    .column {
+        flex: 1; /* This makes both columns share the space equally */
+    }
+}
