@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    
-    </head>
+</head>
 <body>
 
     <div class="container">
@@ -18,9 +17,7 @@
         </header>
 
         <main class="main-layout">
-
             <div class="column" id="left-column">
-
                 <section class="card">
                     <div class="card-header">
                         <h2>Team Members (<span id="member-count">0</span>)</h2>
@@ -56,11 +53,9 @@
                         <button id="clear-adhoc-btn" class="btn btn-secondary">Clear All Sessions</button>
                     </div>
                 </section>
-
             </div>
 
             <div class="column" id="right-column">
-
                 <section class="card">
                     <div class="card-header">
                         <h2>Report Management</h2>
@@ -89,7 +84,10 @@
                     </div>
                 </section>
             </div>
-        </main> </div> <div id="add-member-modal" class="modal">
+        </main>
+    </div>
+
+    <div id="add-member-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
             <h3>Add New Team Member</h3>
@@ -98,13 +96,11 @@
             <button id="save-member-btn" class="btn">Save Member</button>
         </div>
     </div>
-
     <div id="roster-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
             <h3>Add Members from Roster</h3>
-            <ul id="roster-list" class="item-list roster-list">
-            </ul>
+            <ul id="roster-list" class="item-list roster-list"></ul>
         </div>
     </div>
 

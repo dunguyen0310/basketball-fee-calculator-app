@@ -312,7 +312,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     const handleSaveActiveAdhoc = () => {
-        alert("Your data is saved to the cloud in real-time automatically!");
+        // This button is now just for user assurance, as data saves in real-time.
+        // We add the confetti animation for great feedback.
+        const confettiOptions = { particleCount: 150, spread: 90, startVelocity: 50, origin: { y: 1 } };
+        confetti({ ...confettiOptions, origin: { x: 0 } });
+        confetti({ ...confettiOptions, origin: { x: 1 } });
+
+        saveAdhocBtn.textContent = 'Saved! ✅';
+        saveAdhocBtn.classList.add('saved');
+        saveAdhocBtn.disabled = true;
+        setTimeout(() => {
+            saveAdhocBtn.textContent = 'Confirm Save';
+            saveAdhocBtn.classList.remove('saved');
+            saveAdhocBtn.disabled = false;
+        }, 2500);
     };
 
     // --- 6. FIREBASE REAL-TIME LISTENERS ---
@@ -376,5 +389,5 @@ document.addEventListener('DOMContentLoaded', () => {
     adhocDateInput.value = new Date().toISOString().split('T')[0];
     reportNameInput.value = `Report for ${new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}`;
     qrCodeImg.src = qrCodeUrl;
-    // No need to load from localStorage; Firebase 'onValue' listeners handle everything automatically.
-});    
+    // No need to load anything else; Firebase 'onValue' listeners handle it all.
+});
