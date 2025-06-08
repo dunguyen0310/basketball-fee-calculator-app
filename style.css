@@ -21,7 +21,6 @@ header .icon{font-size:2.5rem}
 .item-list{list-style:none;padding:0;max-height:200px;overflow-y:auto}
 .item-list li{background-color:#333;padding:10px;border-radius:5px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
 .item-list .delete-btn{background:none;border:none;color:#ff4d4d;cursor:pointer;font-size:1.2rem}
-.report-output,.insights-output{margin-top:20px;background-color:#1a1a1a;padding:20px;border-radius:8px;border:1px solid #444;text-align:left;white-space:pre-wrap;font-size:.95rem;line-height:1.6;display:none}
 .report-output h4{color:#ff6f00;border-bottom:1px solid #555;padding-bottom:5px}
 .report-output p,.report-output ul{margin-bottom:15px}
 .report-output li{list-style:disc;margin-left:20px}
