@@ -16,20 +16,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
-    // Create references for all three data paths
+    // Create references for all three data paths in your database
     const adhocSessionsRef = ref(database, 'activeAdhocSessions');
     const teamMembersRef = ref(database, 'activeTeamMembers');
     const savedReportsRef = ref(database, 'savedReports');
 
-
-    // --- 2. CONFIGURATION & STATE ---
+    // --- 2. APP CONFIGURATION & STATE ---
     const COURT_RENT = 4320000;
     const ADHOC_FEE_PER_SESSION = 70000;
     const CLOUDINARY_CLOUD_NAME = "duukynapb";
     const CLOUDINARY_UPLOAD_PRESET = "mafia-cats-preset";
     const qrCodeUrl = 'https://res.cloudinary.com/duukynapb/image/upload/v1749306691/width_199_id97k5.jpg';
 
-    // Your personalized roster is preserved
+    // This is your default roster of players
     const DEFAULT_ROSTER = [
         { id: 'def-01', name: 'Thường', avatarUrl: 'https://res.cloudinary.com/duukynapb/image/upload/v1749311917/ChatGPT_Image_Jun_7_2025_10_58_31_PM_awxfp1.png' },
         { id: 'def-02', name: 'Du', avatarUrl: 'https://res.cloudinary.com/duukynapb/image/upload/v1749313494/ChatGPT_Image_Jun_7_2025_11_24_37_PM_y0je5p.png' },
@@ -49,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'def-16', name: 'An Mập', avatarUrl: 'https://i.pravatar.cc/80?u=AnMap' },
         { id: 'def-17', name: 'Hậu', avatarUrl: 'https://res.cloudinary.com/duukynapb/image/upload/v1749308451/ChatGPT_Image_Jun_7_2025_09_59_54_PM_oyhqsh.png' }
     ];
+    // These arrays will be kept in sync with Firebase by our listeners
     let teamMembers = [];
     let adhocSessions = [];
     let savedReports = [];
