@@ -20,7 +20,7 @@ header .icon{font-size:2.5rem}
 .item-list{list-style:none;padding:0;max-height:200px;overflow-y:auto}
 .item-list li{background-color:#333;padding:10px;border-radius:5px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
 .item-list .delete-btn{background:none;border:none;color:#ff4d4d;cursor:pointer;font-size:1.2rem}
-.report-output{margin-top:20px;background-color:#1a1a1a;padding:20px;border-radius:8px;border:1px solid #444;text-align:left;display:none}
+.report-output,.insights-output{margin-top:20px;background-color:#1a1a1a;padding:20px;border-radius:8px;border:1px solid #444;text-align:left;white-space:pre-wrap;font-size:.95rem;line-height:1.6}
 .report-output h4{color:#ff6f00;border-bottom:1px solid #555;padding-bottom:5px}
 .report-output p,.report-output ul{margin-bottom:15px}
 .report-output li{list-style:disc;margin-left:20px}
@@ -67,5 +67,8 @@ header .icon{font-size:2.5rem}
 .report-summary-content li{padding:5px 0;border-bottom:1px solid #333}
 .summary-actions{margin-top:20px}
 .summary-actions .btn{width:100%}
+.report-summary-details p{margin:5px 0;font-size:1.1rem}
+.report-summary-details p strong{color:#ff6f00;font-size:1.3rem}
+hr{border:none;border-top:1px solid #444;margin:15px 0}
 @media (max-width:768px){.container{padding:15px}header h1{font-size:2.2rem}header .icon{font-size:2rem}.card{padding:20px 15px}.member-avatar-container .member-avatar{width:90px;height:90px}.member-name{font-size:1rem}.add-adhoc-form{flex-direction:column}.adhoc-actions{flex-direction:column}#monthly-fee{font-size:2.5rem}.fee-qr-container{flex-direction:column;gap:20px}#share-fee-btn{padding:15px 20px;font-size:1rem}.modal-content{width:90%;margin:10% auto;padding:15px}#roster-modal .roster-list{max-height:350px}}
 @media (min-width:1024px){.container{max-width:1280px}.main-layout{display:flex;gap:30px;align-items:flex-start}.column{flex:1}}
