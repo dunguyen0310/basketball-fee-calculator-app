@@ -349,10 +349,12 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please add your Google Gemini API Key to the script.js file.');
             return;
         }
+    
         generateInsightsBtn.disabled = true;
         generateInsightsBtn.innerHTML = '🧠 Analyzing...';
         insightsOutput.classList.remove('hidden');
         insightsOutput.textContent = 'Please wait while the AI analyzes your team data...';
+    
         try {
             const processedData = {
                 totalReports: savedReports.length,
@@ -372,6 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     processedData.guestAttendance[session.name] = (processedData.guestAttendance[session.name] || 0) + 1;
                 });
             });
+    
             const prompt = `You are a helpful basketball team manager's assistant for the 'Bricklayer' team.
             Analyze the following monthly attendance data which was collected over ${processedData.totalReports} months. 
             Provide short, actionable insights in a fun, encouraging tone.
@@ -380,19 +383,25 @@ document.addEventListener('DOMContentLoaded', () => {
             - Identify the most frequent ad-hoc guests and suggest if they should be invited to the main roster.
             - Keep the insights concise and use bullet points with emojis.
             Here is the data in JSON format: ${JSON.stringify(processedData)}`;
-
-            const apiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+    
+            // THIS IS THE UPDATED LINE
+            const apiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
             });
+    
             if (!apiResponse.ok) {
-                if (apiResponse.status === 429) { throw new Error('Too many requests. Please wait a minute before trying again.'); }
+                if (apiResponse.status === 429) {
+                    throw new Error('Too many requests. Please wait a minute before trying again.');
+                }
                 throw new Error('The AI API request failed.');
             }
+    
             const responseData = await apiResponse.json();
             const aiText = responseData.candidates[0].content.parts[0].text;
             insightsOutput.textContent = aiText;
+            
         } catch (error) {
             console.error('AI Insights Error:', error);
             insightsOutput.textContent = `Sorry, an error occurred: ${error.message}`;
