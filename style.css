@@ -1,425 +1,71 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;700&display=swap');
-
-body {
-    background-color: #1a1a1a;
-    color: #f5f5f5;
-    font-family: 'Roboto', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-}
-.container {
-    width: 100%;
-    max-width: 600px;
-    text-align: center;
-}
-header h1 {
-    font-family: 'Anton', sans-serif;
-    font-size: 3rem;
-    color: #ff6f00;
-    text-shadow: 2px 2px 4px #000;
-}
-header .icon {
-    font-size: 2.5rem;
-}
-.btn {
-    background-color: #ff6f00;
-    color: #1a1a1a;
-    font-weight: bold;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-}
-.btn:hover {
-    background-color: #ff8f33;
-}
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.7);
-}
-.modal-content {
-    background-color: #2c2c2c;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 400px;
-    border-radius: 10px;
-    position: relative;
-}
-.close-btn {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-.modal-content input[type="text"], .modal-content input[type="file"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    border: 1px solid #555;
-    background-color: #333;
-    color: #f5f5f5;
-}
-.modal-content #save-member-btn {
-    width: 100%;
-    margin-top: 10px;
-}
-.card {
-    background-color: #2c2c2c;
-    padding: 20px 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    margin-bottom: 30px;
-    text-align: left;
-}
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #444;
-}
-.card-header h2 {
-    margin: 0;
-    color: #ff6f00;
-    font-family: 'Anton', sans-serif;
-}
-.btn-small {
-    background-color: #444;
-    color: #f5f5f5;
-    padding: 8px 15px;
-    font-size: 0.9rem;
-}
-.btn-small:hover {
-    background-color: #555;
-}
-.add-adhoc-form {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-.add-adhoc-form input {
-    flex-grow: 1;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #555;
-    background-color: #333;
-    color: #f5f5f5;
-    font-size: 1rem;
-}
-.item-list {
-    list-style: none;
-    padding: 0;
-    max-height: 200px;
-    overflow-y: auto;
-}
-.item-list li {
-    background-color: #333;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.item-list .delete-btn {
-    background: none;
-    border: none;
-    color: #ff4d4d;
-    cursor: pointer;
-    font-size: 1.2rem;
-}
-.report-output {
-    margin-top: 20px;
-    background-color: #1a1a1a;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #444;
-    text-align: left;
-    display: none;
-}
-.report-output h4 {
-    color: #ff6f00;
-    border-bottom: 1px solid #555;
-    padding-bottom: 5px;
-}
-.report-output p, .report-output ul {
-    margin-bottom: 15px;
-}
-.report-output li {
-    list-style: disc;
-    margin-left: 20px;
-}
-.member-avatar-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-}
-.member-name {
-    color: #f5f5f5;
-    font-weight: bold;
-    font-size: 1.1rem;
-    text-align: center;
-    margin-top: 4px;
-}
-.member-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
-    margin-bottom: 20px;
-    align-items: flex-start;
-}
-.save-report-form {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-.save-report-form input {
-    flex-grow: 1;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #555;
-    background-color: #333;
-    color: #f5f5f5;
-    font-size: 1rem;
-}
-.saved-reports-actions {
-    display: flex;
-    gap: 10px;
-}
-.hidden {
-    display: none;
-}
-.member-actions {
-    display: flex;
-    gap: 10px;
-}
-#save-report-wrapper {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #444;
-}
-.roster-list li {
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-.roster-list li:hover {
-    background-color: #4a4a4a;
-}
-.roster-list li.added {
-    background-color: #1a1a1a;
-    color: #666;
-    cursor: not-allowed;
-    text-decoration: line-through;
-}
-.roster-list .roster-member-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-.roster-list .roster-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-#roster-modal .modal-content {
-    width: 90%;
-    max-width: 500px;
-}
-#roster-modal .roster-list {
-    max-height: 550px;
-    overflow-y: auto;
-}
-.member-avatar-container .member-avatar {
-    cursor: pointer;
-    transition: transform 0.2s, border-color 0.2s;
-    width: 110px;
-    height: 110px;
-    border: 4px solid #ff6f00;
-}
-.member-avatar-container .member-avatar:hover {
-    transform: scale(1.1);
-    border-color: #ff4d4d;
-}
-.saved-reports-container {
-    margin-top: 25px;
-    padding-top: 20px;
-    border-top: 1px solid #444;
-}
-.saved-reports-container h4 {
-    color: #ff6f00;
-    margin-bottom: 15px;
-}
-#adhoc-list li {
-    font-size: 1.1rem;
-    padding: 12px 15px;
-}
-#adhoc-list li strong {
-    color: #ff6f00;
-    font-weight: 700;
-}
-#fee-share-area {
-    background-color: #1e1e1e;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 15px;
-    text-align: center;
-}
-#fee-share-area h3 {
-    margin: 0 0 10px 0;
-    color: #ff6f00;
-    font-family: 'Anton', sans-serif;
-    letter-spacing: 1px;
-}
-.fee-qr-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-    flex-wrap: wrap;
-}
-#monthly-fee {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #fff;
-}
-#qr-code-img {
-    width: 130px;
-    height: auto;
-    border-radius: 8px;
-    background-color: white;
-}
-#share-fee-btn {
-    width: 100%;
-}
-.report-generation-container {
-    padding-top: 20px;
-    border-top: 1px solid #444;
-    margin-top: 25px;
-}
-.adhoc-actions {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #444;
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-}
-.btn.btn-secondary {
-    background-color: #444;
-    color: #f5f5f5;
-}
-.btn.btn-secondary:hover {
-    background-color: #555;
-}
-.card-description {
-    font-size: 0.9rem;
-    color: #ccc;
-    text-align: center;
-    margin: -10px 0 20px 0;
-    font-style: italic;
-}
-.managed-list {
-    background-color: #1e1e1e;
-    border: 1px solid #444;
-    border-radius: 8px;
-    padding: 10px;
-    margin-top: 20px;
-    min-height: 50px;
-}
-.btn.saved {
-    background-color: #28a745;
-    color: white;
-    cursor: default;
-}
-.card-subtitle {
-    font-size: 1rem;
-    color: #ccc;
-    margin: -5px 0 20px 0;
-    font-weight: 400;
-    text-align: left;
-}
-.card-subtitle span {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #ff6f00;
-    margin-right: 4px;
-}
-@media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
-    header h1 {
-        font-size: 2.2rem;
-    }
-    header .icon {
-        font-size: 2rem;
-    }
-    .card {
-        padding: 20px 15px;
-    }
-    .member-avatar-container .member-avatar {
-        width: 90px;
-        height: 90px;
-    }
-    .member-name {
-        font-size: 1rem;
-    }
-    .add-adhoc-form {
-        flex-direction: column;
-    }
-    .adhoc-actions {
-        flex-direction: column;
-    }
-    #monthly-fee {
-        font-size: 2.5rem;
-    }
-    .fee-qr-container {
-        flex-direction: column;
-        gap: 20px;
-    }
-    #share-fee-btn {
-        padding: 15px 20px;
-        font-size: 1rem;
-    }
-    .modal-content {
-        width: 90%;
-        margin: 10% auto;
-        padding: 15px;
-    }
-    #roster-modal .roster-list {
-        max-height: 350px;
-    }
-}
-@media (min-width: 1024px) {
-    .container {
-        max-width: 1280px;
-    }
-    .main-layout {
-        display: flex;
-        gap: 30px;
-        align-items: flex-start;
-    }
-    .column {
-        flex: 1;
-    }
-}
+body{background-color:#1a1a1a;color:#f5f5f5;font-family:'Roboto',sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+.container{width:100%;max-width:600px;text-align:center}
+header h1{font-family:'Anton',sans-serif;font-size:3rem;color:#ff6f00;text-shadow:2px 2px 4px #000}
+header .icon{font-size:2.5rem}
+.btn{background-color:#ff6f00;color:#1a1a1a;font-weight:bold;padding:12px 25px;border:none;border-radius:8px;cursor:pointer;font-size:1rem;transition:background-color .3s}
+.btn:hover{background-color:#ff8f33}
+.modal{display:none;position:fixed;z-index:1;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,.7)}
+.modal-content{background-color:#2c2c2c;margin:15% auto;padding:20px;border:1px solid #888;width:80%;max-width:400px;border-radius:10px;position:relative}
+.close-btn{color:#aaa;float:right;font-size:28px;font-weight:bold;cursor:pointer}
+.modal-content input[type=text],.modal-content input[type=file]{width:calc(100% - 20px);padding:10px;margin:10px 0;border-radius:5px;border:1px solid #555;background-color:#333;color:#f5f5f5}
+.modal-content #save-member-btn{width:100%;margin-top:10px}
+.card{background-color:#2c2c2c;padding:20px 30px;border-radius:15px;box-shadow:0 10px 20px rgba(0,0,0,.2);margin-bottom:30px;text-align:left}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid #444}
+.card-header h2{margin:0;color:#ff6f00;font-family:'Anton',sans-serif}
+.btn-small{background-color:#444;color:#f5f5f5;padding:8px 15px;font-size:.9rem}
+.btn-small:hover{background-color:#555}
+.add-adhoc-form{display:flex;gap:10px;margin-bottom:20px}
+.add-adhoc-form input{flex-grow:1;padding:10px;border-radius:5px;border:1px solid #555;background-color:#333;color:#f5f5f5;font-size:1rem}
+.item-list{list-style:none;padding:0;max-height:200px;overflow-y:auto}
+.item-list li{background-color:#333;padding:10px;border-radius:5px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.item-list .delete-btn{background:none;border:none;color:#ff4d4d;cursor:pointer;font-size:1.2rem}
+.report-output{margin-top:20px;background-color:#1a1a1a;padding:20px;border-radius:8px;border:1px solid #444;text-align:left;display:none}
+.report-output h4{color:#ff6f00;border-bottom:1px solid #555;padding-bottom:5px}
+.report-output p,.report-output ul{margin-bottom:15px}
+.report-output li{list-style:disc;margin-left:20px}
+.member-avatar-container{display:flex;flex-direction:column;align-items:center;gap:8px}
+.member-name{color:#f5f5f5;font-weight:bold;font-size:1.1rem;text-align:center;margin-top:4px}
+.member-list{display:flex;flex-wrap:wrap;justify-content:center;gap:30px;margin-bottom:20px;align-items:flex-start}
+.save-report-form{display:flex;gap:10px;margin-bottom:20px}
+.save-report-form input{flex-grow:1;padding:10px;border-radius:5px;border:1px solid #555;background-color:#333;color:#f5f5f5;font-size:1rem}
+.saved-reports-actions{display:flex;gap:10px}
+.hidden{display:none}
+.member-actions{display:flex;gap:10px}
+#save-report-wrapper{margin-top:20px;padding-top:20px;border-top:1px solid #444}
+.roster-list li{cursor:pointer;transition:background-color .2s}
+.roster-list li:hover{background-color:#4a4a4a}
+.roster-list li.added{background-color:#1a1a1a;color:#666;cursor:not-allowed;text-decoration:line-through}
+.roster-list .roster-member-info{display:flex;align-items:center;gap:15px}
+.roster-list .roster-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover}
+#roster-modal .modal-content{width:90%;max-width:500px}
+#roster-modal .roster-list{max-height:550px;overflow-y:auto}
+.member-avatar-container .member-avatar{cursor:pointer;transition:transform .2s,border-color .2s;width:110px;height:110px;border:4px solid #ff6f00}
+.member-avatar-container .member-avatar:hover{transform:scale(1.1);border-color:#ff4d4d}
+.saved-reports-container{margin-top:25px;padding-top:20px;border-top:1px solid #444}
+.saved-reports-container h4{color:#ff6f00;margin-bottom:15px}
+#adhoc-list li{font-size:1.1rem;padding:12px 15px}
+#adhoc-list li strong{color:#ff6f00;font-weight:700}
+#fee-share-area{background-color:#1e1e1e;border-radius:10px;padding:20px;margin-bottom:15px;text-align:center}
+#fee-share-area h3{color:#ff6f00;font-family:'Anton',sans-serif;letter-spacing:1px;margin:0 0 10px 0}
+.fee-qr-container{display:flex;justify-content:center;align-items:center;gap:30px;flex-wrap:wrap}
+#monthly-fee{font-size:3rem;font-weight:bold;color:#fff}
+#qr-code-img{width:130px;height:auto;border-radius:8px;background-color:#fff}
+#share-fee-btn{width:100%}
+.report-generation-container{padding-top:20px;border-top:1px solid #444;margin-top:25px}
+.adhoc-actions{margin-top:20px;padding-top:20px;border-top:1px solid #444;display:flex;justify-content:space-between;gap:15px}
+.btn.btn-secondary{background-color:#444;color:#f5f5f5}
+.btn.btn-secondary:hover{background-color:#555}
+.card-description{font-size:.9rem;color:#ccc;text-align:center;margin:-10px 0 20px 0;font-style:italic}
+.managed-list{background-color:#1e1e1e;border:1px solid #444;border-radius:8px;padding:10px;margin-top:20px;min-height:50px}
+.btn.saved{background-color:#28a745;color:#fff;cursor:default}
+.card-subtitle{font-size:1rem;color:#ccc;margin:-5px 0 20px 0;font-weight:400;text-align:left}
+.card-subtitle span{font-size:1.3rem;font-weight:700;color:#ff6f00;margin-right:4px}
+.report-summary-content{margin:20px 0;max-height:300px;overflow-y:auto;background-color:#1e1e1e;padding:15px;border-radius:8px}
+.report-summary-content h4{color:#ff6f00;margin-top:0}
+.report-summary-content ul{list-style:none;padding:0}
+.report-summary-content li{padding:5px 0;border-bottom:1px solid #333}
+.summary-actions{margin-top:20px}
+.summary-actions .btn{width:100%}
+@media (max-width:768px){.container{padding:15px}header h1{font-size:2.2rem}header .icon{font-size:2rem}.card{padding:20px 15px}.member-avatar-container .member-avatar{width:90px;height:90px}.member-name{font-size:1rem}.add-adhoc-form{flex-direction:column}.adhoc-actions{flex-direction:column}#monthly-fee{font-size:2.5rem}.fee-qr-container{flex-direction:column;gap:20px}#share-fee-btn{padding:15px 20px;font-size:1rem}.modal-content{width:90%;margin:10% auto;padding:15px}#roster-modal .roster-list{max-height:350px}}
+@media (min-width:1024px){.container{max-width:1280px}.main-layout{display:flex;gap:30px;align-items:flex-start}.column{flex:1}}
