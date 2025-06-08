@@ -180,8 +180,12 @@ header .icon {
     margin-top: 4px;
 }
 .member-list {
-    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 30px;
+    margin-bottom: 20px;
+    align-items: flex-start;
 }
 .save-report-form {
     display: flex;
