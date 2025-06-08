@@ -1,3 +1,4 @@
+// --- Import modern Firebase functions ---
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
 import { getDatabase, ref, onValue, push, remove, set } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-database.js";
 
@@ -12,8 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
         messagingSenderId: "394781234199",
         appId: "1:394781234199:web:3d91f8b93df77bff7af852"
     };
+
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
+    // Create references for all three data paths in your database
     const adhocSessionsRef = ref(database, 'activeAdhocSessions');
     const teamMembersRef = ref(database, 'activeTeamMembers');
     const savedReportsRef = ref(database, 'savedReports');
@@ -24,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const CLOUDINARY_CLOUD_NAME = "duukynapb";
     const CLOUDINARY_UPLOAD_PRESET = "mafia-cats-preset";
     const qrCodeUrl = 'https://res.cloudinary.com/duukynapb/image/upload/v1749306691/width_199_id97k5.jpg';
+
+    // This is your default roster of players
     const DEFAULT_ROSTER = [
         { id: 'def-01', name: 'Thường', avatarUrl: 'https://res.cloudinary.com/duukynapb/image/upload/v1749311917/ChatGPT_Image_Jun_7_2025_10_58_31_PM_awxfp1.png' },
         { id: 'def-02', name: 'Du', avatarUrl: 'https://res.cloudinary.com/duukynapb/image/upload/v1749313494/ChatGPT_Image_Jun_7_2025_11_24_37_PM_y0je5p.png' },
@@ -99,7 +104,16 @@ document.addEventListener('DOMContentLoaded', () => {
         teamMembers.forEach(member => {
             const memberContainer = document.createElement('div');
             memberContainer.className = 'member-avatar-container';
-            memberContainer.innerHTML = `<img src="<span class="math-inline">\{member\.avatarUrl\}" alt\="</span>{member.name}" class="member-avatar" data-id="<span class="math-inline">\{member\.key\}"\><span class\="member\-name"\></span>{member.name}</span>`;
+            const avatarImg = document.createElement('img');
+            avatarImg.src = member.avatarUrl;
+            avatarImg.alt = member.name;
+            avatarImg.className = 'member-avatar';
+            avatarImg.dataset.id = member.key;
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'member-name';
+            nameSpan.textContent = member.name;
+            memberContainer.appendChild(avatarImg);
+            memberContainer.appendChild(nameSpan);
             memberListDiv.appendChild(memberContainer);
         });
         memberCountDisplay.textContent = teamMembers.length;
@@ -122,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteBtn.dataset.id = session.key;
             deleteBtn.innerHTML = '&times;';
             li.appendChild(textSpan);
-li.appendChild(deleteBtn);
+            li.appendChild(deleteBtn);
             adhocListUl.appendChild(li);
         });
         const uniqueNames = new Set(adhocSessions.map(session => session.name));
@@ -139,7 +153,7 @@ li.appendChild(deleteBtn);
         }
         savedReports.forEach(report => {
             const li = document.createElement('li');
-            li.innerHTML = `<span><span class="math-inline">\{report\.name\}</span\><div class\="saved\-reports\-actions"\><button class\="btn btn\-small view\-report\-btn" data\-id\="</span>{report.key}">View</button><button class="delete-btn" data-id="${report.key}">&times;</button></div>`;
+            li.innerHTML = `<span>${report.name}</span><div class="saved-reports-actions"><button class="btn btn-small view-report-btn" data-id="${report.key}">View</button><button class="delete-btn" data-id="${report.key}">&times;</button></div>`;
             savedReportsListUl.appendChild(li);
         });
     };
@@ -161,7 +175,7 @@ li.appendChild(deleteBtn);
             for (const name in adhocByName) { adhocListHtml += `<li><strong>${name}</strong> played on: ${adhocByName[name].join(', ')}</li>`; }
         } else { adhocListHtml += '<li>No ad-hoc players this month.</li>'; }
         adhocListHtml += '</ul>';
-        reportOutputDiv.innerHTML = `<h4>Monthly Summary</h4><p>Total monthly members paying fee: <strong><span class="math-inline">\{teamMembers\.length\}</strong\></p\></span>{memberListHtml}<h4>Ad-Hoc Summary</h4><p>Total ad-hoc player sessions: <strong><span class="math-inline">\{adhocSessions\.length\}</strong\></p\></span>{adhocListHtml}`;
+        reportOutputDiv.innerHTML = `<h4>Monthly Summary</h4><p>Total monthly members paying fee: <strong>${teamMembers.length}</strong></p>${memberListHtml}<h4>Ad-Hoc Summary</h4><p>Total ad-hoc player sessions: <strong>${adhocSessions.length}</strong></p>${adhocListHtml}`;
     };
     async function uploadImage(file) {
         if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) { alert("Cloudinary is not configured."); return null; }
@@ -185,7 +199,7 @@ li.appendChild(deleteBtn);
         DEFAULT_ROSTER.forEach(member => {
             const li = document.createElement('li');
             li.dataset.id = member.id;
-            li.innerHTML = `<div class="roster-member-info"><img src="<span class="math-inline">\{member\.avatarUrl\}" alt\="</span>{member.name}" class="roster-avatar"><span>${member.name}</span></div>`;
+            li.innerHTML = `<div class="roster-member-info"><img src="${member.avatarUrl}" alt="${member.name}" class="roster-avatar"><span>${member.name}</span></div>`;
             if (activeMemberIds.includes(member.id)) {
                 li.classList.add('added');
                 li.innerHTML += `<span>Added</span>`;
@@ -195,7 +209,7 @@ li.appendChild(deleteBtn);
             rosterListUl.appendChild(li);
         });
     };
-
+    
     // --- 5. EVENT HANDLERS ---
     function handleRosterListClick(event) {
         if (event.target.tagName !== 'BUTTON') return;
@@ -367,11 +381,9 @@ li.appendChild(deleteBtn);
     });
     closeRosterModalBtn.addEventListener('click', () => { rosterModal.style.display = 'none'; });
     window.addEventListener('click', (e) => { if (e.target === rosterModal) { rosterModal.style.display = 'none'; } });
-    
     closeSummaryModalBtn.addEventListener('click', () => reportSummaryModal.style.display = 'none');
     window.addEventListener('click', (e) => { if (e.target === reportSummaryModal) { reportSummaryModal.style.display = 'none'; } });
     cloneFromSummaryBtn.addEventListener('click', (e) => handleCloneReport(e.target.dataset.id));
-
     shareFeeBtn.addEventListener('click', handleShareFee);
     memberListDiv.addEventListener('click', handleRemoveMember);
     rosterListUl.addEventListener('click', handleRosterListClick);
