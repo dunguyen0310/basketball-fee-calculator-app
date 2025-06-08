@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
-    // Create references for all three data paths in your database
     const adhocSessionsRef = ref(database, 'activeAdhocSessions');
     const teamMembersRef = ref(database, 'activeTeamMembers');
     const savedReportsRef = ref(database, 'savedReports');
@@ -28,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const CLOUDINARY_UPLOAD_PRESET = "mafia-cats-preset";
     const qrCodeUrl = 'https://res.cloudinary.com/duukynapb/image/upload/v1749306691/width_199_id97k5.jpg';
 
-    // This is your default roster of players
     const DEFAULT_ROSTER = [
         { id: 'def-01', name: 'Thường', avatarUrl: 'https://res.cloudinary.com/duukynapb/image/upload/v1749311917/ChatGPT_Image_Jun_7_2025_10_58_31_PM_awxfp1.png' },
         { id: 'def-02', name: 'Du', avatarUrl: 'https://res.cloudinary.com/duukynapb/image/upload/v1749313494/ChatGPT_Image_Jun_7_2025_11_24_37_PM_y0je5p.png' },
@@ -272,53 +270,57 @@ document.addEventListener('DOMContentLoaded', () => {
         const reportToClone = savedReports.find(r => r.key === reportKey);
         if (!reportToClone) return alert('Report not found.');
         if (!confirm(`This will replace all current members and ad-hoc players with data from "${reportToClone.name}". Continue?`)) { return; }
-        set(teamMembersRef, reportToClone.members || null);
-        set(adhocSessionsRef, reportToClone.adhoc || null);
+        
+        // Clear current active data
+        remove(teamMembersRef);
+        remove(adhocSessionsRef);
+
+        // Add members from the cloned report back ONE BY ONE to get new unique keys
+        const clonedMembers = reportToClone.members || [];
+        clonedMembers.forEach(member => {
+            const newMember = { id: member.id, name: member.name, avatarUrl: member.avatarUrl };
+            push(teamMembersRef, newMember);
+        });
+
+        const clonedAdhoc = reportToClone.adhoc || [];
+        clonedAdhoc.forEach(session => {
+            const newSession = { name: session.name, date: session.date };
+            push(adhocSessionsRef, newSession);
+        });
+
         alert(`Report "${reportToClone.name}" has been cloned.`);
         reportSummaryModal.style.display = 'none';
     };
     function handleViewReport(reportKey) {
         const report = savedReports.find(r => r.key === reportKey);
         if (!report) return;
-    
         summaryReportName.textContent = report.name;
-    
-        // --- NEW: Calculate summary numbers from the report data ---
-        const members = report.members || [];
-        const adhoc = report.adhoc || [];
+        
+        const members = Object.values(report.members || {});
+        const adhoc = Object.values(report.adhoc || {});
         
         const memberCount = members.length;
         const adhocSessionCount = adhoc.length;
         const uniqueAdhocCount = new Set(adhoc.map(s => s.name)).size;
-    
-        // --- Build the summary HTML ---
-        let summaryHtml = `
-            <div class="report-summary-details">
-                <p><strong>${memberCount}</strong> Team Members</p>
-                <p><strong>${uniqueAdhocCount}</strong> unique ad-hoc players (${adhocSessionCount} sessions)</p>
-            </div>
-        `;
-    
+        
+        let summaryHtml = `<div class="report-summary-details"><p><strong>${memberCount}</strong> Team Members</p><p><strong>${uniqueAdhocCount}</strong> unique ad-hoc players (${adhocSessionCount} sessions)</p></div><hr>`;
         let membersHtml = '<h4>Team Members List</h4><ul>';
         if (members.length > 0) {
             members.forEach(m => { membersHtml += `<li>${m.name}</li>`; });
-        } else {
-            membersHtml += '<li>No members were in this report.</li>';
-        }
+        } else { membersHtml += '<li>No members were in this report.</li>'; }
         membersHtml += '</ul>';
-    
         let adhocHtml = '<h4>Ad-Hoc Sessions List</h4><ul>';
         if (adhoc.length > 0) {
-            adhoc.forEach(s => { adhocHtml += `<li>${s.name} on ${s.date}</li>`; });
-        } else {
-            adhocHtml += '<li>No ad-hoc sessions were in this report.</li>';
-        }
+            adhoc.forEach(s => {
+                const dateObj = new Date(s.date.replace(/-/g, '/'));
+                const formattedDate = dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                adhocHtml += `<li>${s.name} on ${formattedDate}</li>`;
+            });
+        } else { adhocHtml += '<li>No ad-hoc sessions were in this report.</li>'; }
         adhocHtml += '</ul>';
-    
-        // Set the complete content for the modal
-        summaryContent.innerHTML = summaryHtml + membersHtml + adhocHtml;
         
-        cloneFromSummaryBtn.dataset.id = report.key; // Set the key on the clone button
+        summaryContent.innerHTML = summaryHtml + membersHtml + adhocHtml;
+        cloneFromSummaryBtn.dataset.id = report.key;
         reportSummaryModal.style.display = 'block';
     }
     function handleSavedReportsClick(event) {
