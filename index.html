@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-</head>
+    
+    </head>
 <body>
 
     <div class="container">
@@ -42,7 +43,7 @@
                         </div>
                     </div>
                     <p class="card-description">
-                        Add players after each session. The list is saved to your browser automatically when you add, remove, or use the buttons below.
+                        Add players after each session. The list is saved to the cloud automatically for all admins to see.
                     </p>
                     <div class="add-adhoc-form">
                         <input type="text" id="adhoc-name-input" placeholder="Ad-Hoc Player's Name">
@@ -51,8 +52,8 @@
                     </div>
                     <ul id="adhoc-list" class="item-list managed-list"></ul>
                     <div class="adhoc-actions">
-                        <button id="save-adhoc-btn" class="btn">Save List Manually</button>
-                        <button id="clear-adhoc-btn" class="btn btn-secondary">Start New Month (Clear List)</button>
+                        <button id="save-adhoc-btn" class="btn">Confirm Save</button>
+                        <button id="clear-adhoc-btn" class="btn btn-secondary">Clear All Sessions</button>
                     </div>
                 </section>
 
@@ -107,6 +108,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
+
 </body>
 </html>

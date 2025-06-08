@@ -1,9 +1,30 @@
+// --- NEW: Import modern Firebase functions ---
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
+import { getDatabase, ref, onValue, push, remove } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-database.js";
+
 document.addEventListener('DOMContentLoaded', () => {
-    // --- 1. CONFIGURATION & STATE ---
+    // --- 1. FIREBASE CONFIGURATION ---
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyAz4_IQg5_P67QYJ30JNDlEISacUS3e3Lc",
+        authDomain: "basketball-club-fee-manager.firebaseapp.com",
+        databaseURL: "https://basketball-club-fee-manager-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "basketball-club-fee-manager",
+        storageBucket: "basketball-club-fee-manager.appspot.com",
+        messagingSenderId: "394781234199",
+        appId: "1:394781234199:web:3d91f8b93df77bff7af852"
+    };
+
+    // Initialize Firebase and get a reference to the database service
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const adhocSessionsRef = ref(database, 'adhocSessions');
+
+
+    // --- 2. CONFIGURATION & STATE ---
     const COURT_RENT = 4320000;
     const ADHOC_FEE_PER_SESSION = 70000;
-    const REPORTS_STORAGE_KEY = 'basketballReports'; // Renamed for clarity
-    const ACTIVE_ADHOC_KEY = 'activeAdhocList';      // NEW: For the work-in-progress ad-hoc list
+    const REPORTS_STORAGE_KEY = 'basketballReports'; // For archived local reports
     const CLOUDINARY_CLOUD_NAME = "duukynapb";
     const CLOUDINARY_UPLOAD_PRESET = "mafia-cats-preset";
     const qrCodeUrl = 'https://res.cloudinary.com/duukynapb/image/upload/v1749306691/width_199_id97k5.jpg';
@@ -31,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let teamMembers = [];
     let adhocSessions = [];
 
-    // --- 2. SELECTING HTML ELEMENTS ---
+    // --- 3. SELECTING HTML ELEMENTS ---
     const monthlyFeeDisplay = document.getElementById('monthly-fee');
     const memberCountDisplay = document.getElementById('member-count');
     const memberListDiv = document.getElementById('member-list');
@@ -41,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveMemberBtn = document.getElementById('save-member-btn');
     const memberNameInputModal = document.getElementById('member-name-input-modal');
     const memberImageInput = document.getElementById('member-image-input');
+    const adhocUniqueCountDisplay = document.getElementById('adhoc-unique-count');
     const adhocSessionCountDisplay = document.getElementById('adhoc-session-count');
     const adhocNameInput = document.getElementById('adhoc-name-input');
     const adhocDateInput = document.getElementById('adhoc-date-input');
@@ -59,12 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const shareFeeBtn = document.getElementById('share-fee-btn');
     const feeShareArea = document.getElementById('fee-share-area');
     const qrCodeImg = document.getElementById('qr-code-img');
-    const saveAdhocBtn = document.getElementById('save-adhoc-btn'); // New button
-    const clearAdhocBtn = document.getElementById('clear-adhoc-btn'); // New button
-    // (inside the SELECTING HTML ELEMENTS section)
-    const adhocUniqueCountDisplay = document.getElementById('adhoc-unique-count'); // Add this line
+    const saveAdhocBtn = document.getElementById('save-adhoc-btn');
+    const clearAdhocBtn = document.getElementById('clear-adhoc-btn');
 
-    // --- 3. RENDERING & CALCULATION FUNCTIONS ---
+    // --- 4. RENDERING & CALCULATION FUNCTIONS ---
     const calculateAndDisplayFee = () => {
         const regularMemberCount = teamMembers.length;
         if (regularMemberCount === 0) {
@@ -89,57 +109,31 @@ document.addEventListener('DOMContentLoaded', () => {
         calculateAndDisplayFee();
         saveReportWrapper.classList.add('hidden');
     };
-    // This is the new, more robust version of the function.
-const renderAdhocSessions = () => {
-    // Clear the current list
-    adhocListUl.innerHTML = '';
-
-    // Loop through each session to create its list item
-    adhocSessions.forEach(session => {
-        // 1. Create the list item element
-        const li = document.createElement('li');
-
-        // 2. Create the text part (e.g., "An mập on Saturday, 7 June 2025")
-        const textSpan = document.createElement('span');
-        const nameStrong = document.createElement('strong');
-        nameStrong.textContent = session.name;
-
-        // Format the date correctly
-        const dateObj = new Date(session.date.replace(/-/g, '/'));
-        const formattedDate = dateObj.toLocaleDateString('en-GB', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
+    const renderAdhocSessions = () => {
+        adhocListUl.innerHTML = '';
+        adhocSessions.forEach(session => {
+            const li = document.createElement('li');
+            const textSpan = document.createElement('span');
+            const nameStrong = document.createElement('strong');
+            nameStrong.textContent = session.name;
+            const dateObj = new Date(session.date.replace(/-/g, '/'));
+            const formattedDate = dateObj.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            textSpan.appendChild(nameStrong);
+            textSpan.appendChild(document.createTextNode(` on ${formattedDate}`));
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.dataset.id = session.key;
+            deleteBtn.innerHTML = '&times;';
+            li.appendChild(textSpan);
+            li.appendChild(deleteBtn);
+            adhocListUl.appendChild(li);
         });
-        
-        // Join the name and the formatted date together
-        textSpan.appendChild(nameStrong);
-        textSpan.appendChild(document.createTextNode(` on ${formattedDate}`));
-
-        // 3. Create the delete button
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'delete-btn';
-        deleteBtn.dataset.id = session.id; // Set the data-id attribute
-        deleteBtn.innerHTML = '&times;';   // Set the '×' symbol
-
-        // 4. Add the text and the button to the list item
-        li.appendChild(textSpan);
-        li.appendChild(deleteBtn);
-
-        // 5. Add the completed list item to the list on the page
-        adhocListUl.appendChild(li);
-    });
-
-    // --- This part remains the same ---
-    // Calculate and display unique and total counts
-    const uniqueNames = new Set(adhocSessions.map(session => session.name));
-    adhocUniqueCountDisplay.textContent = uniqueNames.size;
-    adhocSessionCountDisplay.textContent = adhocSessions.length;
-
-    calculateAndDisplayFee();
-    saveReportWrapper.classList.add('hidden');
-};
+        const uniqueNames = new Set(adhocSessions.map(session => session.name));
+        adhocUniqueCountDisplay.textContent = uniqueNames.size;
+        adhocSessionCountDisplay.textContent = adhocSessions.length;
+        calculateAndDisplayFee();
+        saveReportWrapper.classList.add('hidden');
+    };
     const generateReport = () => {
         reportOutputDiv.style.display = 'block';
         saveReportWrapper.classList.remove('hidden');
@@ -160,7 +154,8 @@ const renderAdhocSessions = () => {
         adhocListHtml += '</ul>';
         reportOutputDiv.innerHTML = `<h4>Monthly Summary</h4><p>Total monthly members paying fee: <strong>${teamMembers.length}</strong></p>${memberListHtml}<h4>Ad-Hoc Summary</h4><p>Total ad-hoc player sessions: <strong>${adhocSessions.length}</strong></p>${adhocListHtml}`;
     };
-    // --- 4. API, STORAGE, & MODAL FUNCTIONS ---
+
+    // --- 5. API, STORAGE, & MODAL FUNCTIONS ---
     async function uploadImage(file) {
         if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
             alert("Cloudinary is not configured.");
@@ -180,16 +175,13 @@ const renderAdhocSessions = () => {
             return null;
         }
     }
-
     const getSavedReports = () => {
         const reportsJson = localStorage.getItem(REPORTS_STORAGE_KEY);
         return reportsJson ? JSON.parse(reportsJson) : [];
     };
-
     const saveReportsToStorage = (reports) => {
         localStorage.setItem(REPORTS_STORAGE_KEY, JSON.stringify(reports));
     };
-
     const renderSavedReportsList = () => {
         const reports = getSavedReports();
         savedReportsListUl.innerHTML = '';
@@ -203,7 +195,6 @@ const renderAdhocSessions = () => {
             savedReportsListUl.appendChild(li);
         });
     };
-
     const renderRosterModal = () => {
         rosterListUl.innerHTML = '';
         const activeMemberIds = teamMembers.map(m => m.id);
@@ -221,7 +212,7 @@ const renderAdhocSessions = () => {
         });
     };
     
-    // --- 5. EVENT HANDLERS ---
+    // --- 6. EVENT HANDLERS ---
     function handleRosterListClick(event) {
         if (event.target.tagName !== 'BUTTON') return;
         const memberId = event.target.closest('li').dataset.id;
@@ -232,7 +223,6 @@ const renderAdhocSessions = () => {
             renderRosterModal();
         }
     }
-
     async function handleAddMember() {
         const name = memberNameInputModal.value.trim();
         const file = memberImageInput.files[0];
@@ -252,27 +242,23 @@ const renderAdhocSessions = () => {
         saveMemberBtn.disabled = false;
         saveMemberBtn.textContent = 'Save Member';
     }
-
     function handleAddAdhoc() {
         const name = adhocNameInput.value.trim();
         const date = adhocDateInput.value;
         if (!name || !date) return alert('Please provide both a name and a date.');
-        const newSession = { id: Date.now(), name: name, date: date };
-        adhocSessions.push(newSession);
-        renderAdhocSessions();
+        const newSession = { name: name, date: date };
+        push(adhocSessionsRef, newSession);
         adhocNameInput.value = '';
-        handleSaveActiveAdhoc(true); // Add this line to auto-save after adding
     }
-
     function handleAdhocListClick(event) {
         if (event.target.classList.contains('delete-btn')) {
-            const sessionId = parseInt(event.target.getAttribute('data-id'));
-            adhocSessions = adhocSessions.filter(s => s.id !== sessionId);
-            renderAdhocSessions();
-            handleSaveActiveAdhoc(true); // Add this line to auto-save after deleting
+            const sessionKey = event.target.dataset.id;
+            if (confirm('Are you sure you want to remove this session?')) {
+                const sessionToRemoveRef = ref(database, `adhocSessions/${sessionKey}`);
+                remove(sessionToRemoveRef);
+            }
         }
     }
-
     function handleRemoveMember(event) {
         if (!event.target.matches('.member-avatar')) return;
         const memberId = event.target.dataset.id;
@@ -295,7 +281,6 @@ const renderAdhocSessions = () => {
         alert(`Report "${reportName}" has been saved!`);
         saveReportWrapper.classList.add('hidden');
     };
-
     function handleCloneReport(reportId) {
         const reports = getSavedReports();
         const reportToClone = reports.find(r => r.id === reportId);
@@ -304,15 +289,19 @@ const renderAdhocSessions = () => {
             return;
         }
         teamMembers = reportToClone.members;
-        adhocSessions = reportToClone.adhoc;
-        localStorage.removeItem(ACTIVE_ADHOC_KEY); // Clear active ad-hoc list when cloning
+        remove(adhocSessionsRef).then(() => {
+            if (reportToClone.adhoc && reportToClone.adhoc.length > 0) {
+                reportToClone.adhoc.forEach(session => {
+                    const newSession = { name: session.name, date: session.date };
+                    push(adhocSessionsRef, newSession);
+                });
+            }
+        });
         renderMembers();
-        renderAdhocSessions();
         reportOutputDiv.style.display = 'none';
         saveReportWrapper.classList.add('hidden');
         alert(`Report "${reportToClone.name}" has been cloned.`);
     };
-
     function handleDeleteReport(reportId) {
         if (!confirm('Are you sure you want to delete this report?')) return;
         let reports = getSavedReports();
@@ -320,7 +309,6 @@ const renderAdhocSessions = () => {
         saveReportsToStorage(reports);
         renderSavedReportsList();
     };
-
     function handleSavedReportsClick(event) {
         const target = event.target;
         if (target.hasAttribute('data-id')) {
@@ -332,7 +320,6 @@ const renderAdhocSessions = () => {
             }
         }
     }
-
     const handleShareFee = () => {
         const buttonText = shareFeeBtn.innerHTML;
         shareFeeBtn.innerHTML = 'Processing...';
@@ -351,86 +338,44 @@ const renderAdhocSessions = () => {
             shareFeeBtn.disabled = false;
         });
     };
-
-    const handleSaveActiveAdhoc = (isAutoSave = false) => {
-        // The core saving logic remains the same
-        localStorage.setItem(ACTIVE_ADHOC_KEY, JSON.stringify(adhocSessions));
-    
-        // If this function was NOT triggered by an auto-save (i.e., the user clicked the button)
-        if (!isAutoSave) {
-            
-            // --- The "Super Intensive" Animation ---
-    
-            // 1. Define the options for our confetti burst
-            const confettiOptions = {
-                particleCount: 2550, // Increased from 100 to 250
-                spread: 1520,        // Increased from 70 to 120 for a wider burst
-                startVelocity: 255,  // Added velocity to shoot them higher and faster
-                decay: 0.9,         // Particles will travel further before slowing down
-                gravity: 1.2,       // Particles will fall a bit faster
-                colors: ['#FFFFFF', '#FF6F00', '#000000'] // Custom colors: White, Orange, Black
-            };
-    
-            // 2. Fire the confetti cannons!
-            // Fire from the left corner
-            confetti({
-                ...confettiOptions, // Use our new options
-                origin: { x: 0, y: 1 } 
-            });
-            // Fire from the right corner
-            confetti({
-                ...confettiOptions, // Use our new options
-                origin: { x: 1, y: 1 }
-            });
-            // Fire from the center for good measure
-            confetti({
-                ...confettiOptions,
-                particleCount: 150, // A smaller burst from the middle
-                origin: { x: 0.5, y: 1 }
-            });
-    
-    
-            // 3. Provide clear visual feedback on the button itself
-            saveAdhocBtn.textContent = 'Saved! ✅';
-            saveAdhocBtn.classList.add('saved');
-            saveAdhocBtn.disabled = true;
-    
-            // 4. Set a timer to revert the button back to normal after 2.5 seconds
-            setTimeout(() => {
-                saveAdhocBtn.textContent = 'Save List Manually';
-                saveAdhocBtn.classList.remove('saved');
-                saveAdhocBtn.disabled = false;
-            }, 2500);
-        }
+    const handleSaveActiveAdhoc = () => {
+        alert("Your data is saved to the cloud in real-time automatically!");
     };
-
     const handleClearActiveAdhoc = () => {
-        if (confirm('Are you sure you want to clear the current ad-hoc list and start a new month? This cannot be undone.')) {
-            adhocSessions = [];
-            localStorage.removeItem(ACTIVE_ADHOC_KEY);
-            renderAdhocSessions();
-            alert('Active ad-hoc list has been cleared.');
+        if (confirm('Are you sure you want to clear the ENTIRE ad-hoc list for everyone? This cannot be undone.')) {
+            remove(adhocSessionsRef);
+            alert('Active ad-hoc list has been cleared from the cloud.');
         }
     };
 
-    const loadActiveAdhocList = () => {
-        const savedAdhoc = localStorage.getItem(ACTIVE_ADHOC_KEY);
-        if (savedAdhoc) {
-            adhocSessions = JSON.parse(savedAdhoc);
+    // --- 7. FIREBASE REAL-TIME LISTENER ---
+    onValue(adhocSessionsRef, (snapshot) => {
+        const data = snapshot.val();
+        const sessionsArray = [];
+        if (data) {
+            for (let key in data) {
+                sessionsArray.push({
+                    key: key,
+                    name: data[key].name,
+                    date: data[key].date
+                });
+            }
         }
-    };
+        adhocSessions = sessionsArray;
+        renderAdhocSessions();
+    });
 
-    // --- 6. EVENT LISTENERS ---
-    addMemberBtn.addEventListener('click', () => { addMemberModal.style.display = 'block'; });
-    closeModalBtn.addEventListener('click', () => { addMemberModal.style.display = 'none'; });
-    window.addEventListener('click', (e) => { if (e.target === addMemberModal) { addMemberModal.style.display = 'none'; } });
+    // --- 8. EVENT LISTENERS ---
+    addMemberBtn.addEventListener('click', () => addMemberModal.style.display = 'block');
+    closeModalBtn.addEventListener('click', () => addMemberModal.style.display = 'none');
+    window.addEventListener('click', (e) => { if (e.target === addMemberModal) addMemberModal.style.display = 'none'; });
 
     openRosterBtn.addEventListener('click', () => {
         renderRosterModal();
         rosterModal.style.display = 'block';
     });
-    closeRosterModalBtn.addEventListener('click', () => { rosterModal.style.display = 'none'; });
-    window.addEventListener('click', (e) => { if (e.target === rosterModal) { rosterModal.style.display = 'none'; } });
+    closeRosterModalBtn.addEventListener('click', () => rosterModal.style.display = 'none');
+    window.addEventListener('click', (e) => { if (e.target === rosterModal) rosterModal.style.display = 'none'; });
 
     shareFeeBtn.addEventListener('click', handleShareFee);
     memberListDiv.addEventListener('click', handleRemoveMember);
@@ -441,14 +386,13 @@ const renderAdhocSessions = () => {
     generateReportBtn.addEventListener('click', generateReport);
     saveReportBtn.addEventListener('click', handleSaveReport);
     savedReportsListUl.addEventListener('click', handleSavedReportsClick);
-    saveAdhocBtn.addEventListener('click', () => handleSaveActiveAdhoc()); // CORRECTED listener
-    clearAdhocBtn.addEventListener('click', handleClearActiveAdhoc); // New listener
+    saveAdhocBtn.addEventListener('click', handleSaveActiveAdhoc);
+    clearAdhocBtn.addEventListener('click', handleClearActiveAdhoc);
 
-    // --- 7. INITIALIZATION ---
-    loadActiveAdhocList(); // Load the work-in-progress ad-hoc list first
+    // --- 9. INITIALIZATION ---
     adhocDateInput.value = new Date().toISOString().split('T')[0];
     reportNameInput.value = `Report for ${new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}`;
     qrCodeImg.src = qrCodeUrl;
-    renderAdhocSessions(); // Render the loaded ad-hoc list
-    renderSavedReportsList(); // Render the archived reports list
-});
+    renderSavedReportsList();
+    renderMembers();
+});        
