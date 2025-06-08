@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         messagingSenderId: "394781234199",
         appId: "1:394781234199:web:3d91f8b93df77bff7af852"
     };
-    const GEMINI_API_KEY = 'AIzaSyAKr2bhx3vLMeokawXRB2-cw2QmRTBcY9Q';
+    const GEMINI_API_KEY = 'AIzaSyDv0UwGRn2oaGF8Yq0gKCVrJ9UL-gqMpW0';
 
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
