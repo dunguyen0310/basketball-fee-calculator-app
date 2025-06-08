@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleShareFee=()=>{const e=shareFeeBtn.innerHTML;shareFeeBtn.innerHTML="Processing...",shareFeeBtn.disabled=!0,html2canvas(feeShareArea,{scale:2,useCORS:!0,backgroundColor:"#1e1e1e"}).then(t=>{const n=document.createElement("a");n.download=`mafia_cats_fee_${(new Date).toISOString().split("T")[0]}.png`,n.href=t.toDataURL("image/png"),n.click(),shareFeeBtn.innerHTML=e,shareFeeBtn.disabled=!1}).catch(t=>{console.error("oops, something went wrong!",t),alert("Could not generate image. Please try again."),shareFeeBtn.innerHTML=e,shareFeeBtn.disabled=!1})};
     const handleSaveActiveAdhoc=()=>{const e={particleCount:150,spread:90,startVelocity:50,origin:{y:1}};confetti({...e,origin:{x:0}}),confetti({...e,origin:{x:1}}),saveAdhocBtn.textContent="Saved! ✅",saveAdhocBtn.classList.add("saved"),saveAdhocBtn.disabled=!0,setTimeout(()=>{saveAdhocBtn.textContent="Confirm Save",saveAdhocBtn.classList.remove("saved"),saveAdhocBtn.disabled=!1},2500)};
     async function handleGenerateInsights() {
-        if (!GEMINI_API_KEY || GEMINI_API_KEY === 'PASTE_YOUR_NEW_API_KEY_HERE') {
+        if (!GEMINI_API_KEY || GEMINI_API_KEY === 'AIzaSyDv0UwGRn2oaGF8Yq0gKCVrJ9UL-gqMpW0') {
             alert('Please add your Google Gemini API Key to the script.js file.');
             return;
         }
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             Here is the data in JSON format: ${JSON.stringify(processedData)}`;
             
             // CORRECTED: Using the gemini-2.0-flash model as requested
-            const apiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+            const apiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${AIzaSyDv0UwGRn2oaGF8Yq0gKCVrJ9UL-gqMpW0}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
