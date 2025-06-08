@@ -105,41 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const prompt = `
 You are "Coach AI", a sharp and witty basketball analyst for a passionate amateur team named "Bricklayer".
-Your task is to analyze the monthly activity report and provide1. Executive AI Summary
+Your task is to analyze the monthly activity report and provide an insightful summary.
+The report should be in HTML format.
 
-Provides high-level insights about your team's financial health
-Smart recommendations based on data patterns
-Easy-to-understand analysis for quick decision making
-
-2. Financial Health Analysis
-
-Real-time cost coverage tracking
-Ad-hoc session contribution analysis
-Revenue breakdown and optimization suggestions
-
-3. Member Engagement Insights
-
-Retention rate calculations
-Attendance pattern analysis
-Member satisfaction indicators
-
-4. Ad-hoc Player Analytics
-
-Visual charts showing player frequency
-Conversion opportunity identification
-Session trend analysis
-
-5. Growth Projections
-
-Optimal team size recommendations
-Fee reduction scenarios
-Revenue potential calculations
-
-6. Predictive Analytics
-
-Churn risk assessment
-Growth probability predictions
-Member conversion forecasting
+**Analysis requirements:**
+1.  **Headline:** Create a catchy, basketball-themed headline for the ${reportDate} report. (e.g., "Bricklayers' Bench Mob Shows Up Big in ${reportDate}!"). Use an <h4> tag.
+2.  **Executive Summary:** Give a brief, high-energy overview of the month. Mention the total member count and total ad-hoc sessions. Use <p> tags.
+3.  **Core Roster Report:** Comment on the stability of the main roster (${teamMembers.length} members). Are they the backbone of the team? Use a <p> tag.
+4.  **Ad-Hoc All-Stars:** Analyze the ad-hoc players. Point out any "frequent flyers" who played multiple times. Suggest if any of these players show the commitment to be considered for a permanent roster spot. List the ad-hoc players and their session counts in a <ul> list.
+5.  **Financial Report:** Provide a financial report & a suggestion for the next month for budget planning.
 
 **Data for ${reportDate}:**
 * **Monthly Team Members (${teamMembers.length} total):** ${memberNames}
