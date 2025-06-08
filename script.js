@@ -280,21 +280,45 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleViewReport(reportKey) {
         const report = savedReports.find(r => r.key === reportKey);
         if (!report) return;
+    
         summaryReportName.textContent = report.name;
+    
+        // --- NEW: Calculate summary numbers from the report data ---
         const members = report.members || [];
         const adhoc = report.adhoc || [];
-        let membersHtml = '<h4>Team Members</h4><ul>';
+        
+        const memberCount = members.length;
+        const adhocSessionCount = adhoc.length;
+        const uniqueAdhocCount = new Set(adhoc.map(s => s.name)).size;
+    
+        // --- Build the summary HTML ---
+        let summaryHtml = `
+            <div class="report-summary-details">
+                <p><strong>${memberCount}</strong> Team Members</p>
+                <p><strong>${uniqueAdhocCount}</strong> unique ad-hoc players (${adhocSessionCount} sessions)</p>
+            </div>
+        `;
+    
+        let membersHtml = '<h4>Team Members List</h4><ul>';
         if (members.length > 0) {
             members.forEach(m => { membersHtml += `<li>${m.name}</li>`; });
-        } else { membersHtml += '<li>No members in this report.</li>'; }
+        } else {
+            membersHtml += '<li>No members were in this report.</li>';
+        }
         membersHtml += '</ul>';
-        let adhocHtml = '<h4>Ad-Hoc Sessions</h4><ul>';
+    
+        let adhocHtml = '<h4>Ad-Hoc Sessions List</h4><ul>';
         if (adhoc.length > 0) {
             adhoc.forEach(s => { adhocHtml += `<li>${s.name} on ${s.date}</li>`; });
-        } else { adhocHtml += '<li>No ad-hoc sessions in this report.</li>'; }
+        } else {
+            adhocHtml += '<li>No ad-hoc sessions were in this report.</li>';
+        }
         adhocHtml += '</ul>';
-        summaryContent.innerHTML = membersHtml + adhocHtml;
-        cloneFromSummaryBtn.dataset.id = report.key;
+    
+        // Set the complete content for the modal
+        summaryContent.innerHTML = summaryHtml + membersHtml + adhocHtml;
+        
+        cloneFromSummaryBtn.dataset.id = report.key; // Set the key on the clone button
         reportSummaryModal.style.display = 'block';
     }
     function handleSavedReportsClick(event) {
