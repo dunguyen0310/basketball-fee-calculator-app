@@ -3,7 +3,7 @@ body{background-color:#1a1a1a;color:#f5f5f5;font-family:'Roboto',sans-serif;disp
 .container{width:100%;max-width:600px;text-align:center}
 header h1{font-family:'Anton',sans-serif;font-size:3rem;color:#ff6f00;text-shadow:2px 2px 4px #000}
 header .icon{font-size:2.5rem}
-.btn{background-color:#ff6f00;color:#1a1a1a;font-weight:bold;padding:12px 25px;border:none;border-radius:8px;cursor:pointer;font-size:1rem;transition:background-color .3s}
+.btn{background-color:#ff6f00;color:#1a1a1a;font-weight:bold;padding:12px 25px;border:none;border-radius:8px;cursor:pointer;font-size:1rem;transition:background-color .3s, opacity .3s}
 .btn:hover{background-color:#ff8f33}
 .btn:disabled{background-color:#555;cursor:not-allowed}
 .modal{display:none;position:fixed;z-index:1;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,.7)}
@@ -21,6 +21,7 @@ header .icon{font-size:2.5rem}
 .item-list{list-style:none;padding:0;max-height:200px;overflow-y:auto}
 .item-list li{background-color:#333;padding:10px;border-radius:5px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
 .item-list .delete-btn{background:none;border:none;color:#ff4d4d;cursor:pointer;font-size:1.2rem}
+.report-output{margin-top: 15px; text-align: left; background: #333; padding: 15px; border-radius: 8px;}
 .report-output h4{color:#ff6f00;border-bottom:1px solid #555;padding-bottom:5px}
 .report-output p,.report-output ul{margin-bottom:15px}
 .report-output li{list-style:disc;margin-left:20px}
@@ -70,5 +71,70 @@ header .icon{font-size:2.5rem}
 .report-summary-details p{margin:5px 0;font-size:1.1rem}
 .report-summary-details p strong{color:#ff6f00;font-size:1.3rem}
 hr{border:none;border-top:1px solid #444;margin:15px 0}
+
+/* --- AI FEATURE STYLES --- */
+.btn.btn-ai {
+    background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    margin-top: 10px;
+}
+.btn.btn-ai:hover {
+    opacity: 0.9;
+    background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+}
+.btn.btn-ai .icon {
+    margin-right: 8px;
+    display: inline-block;
+    animation: sparkle 1.5s infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2) rotate(15deg); }
+}
+
+#ai-insight-output {
+    background-color: rgba(138, 43, 226, 0.05);
+    border-left: 4px solid #8A2BE2;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 0 8px 8px 0;
+    transition: all 0.3s ease-in-out;
+}
+
+#ai-insight-output.loading {
+    display: block;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+#ai-insight-output.loading::before {
+    content: "✨ Crunching the numbers, analyzing the plays... Hang tight!";
+    font-weight: bold;
+    color: #ff6f00;
+    animation: pulse 1.5s infinite;
+}
+
+#ai-insight-output h4 {
+    color: #8A2BE2; /* Purple to match the AI theme */
+}
+
+#ai-insight-output ul {
+    list-style: none;
+    padding-left: 0;
+}
+#ai-insight-output li::before {
+    content: "🏀";
+    margin-right: 10px;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+/* --- END AI FEATURE STYLES --- */
+
+
 @media (max-width:768px){.container{padding:15px}header h1{font-size:2.2rem}header .icon{font-size:2rem}.card{padding:20px 15px}.member-avatar-container .member-avatar{width:90px;height:90px}.member-name{font-size:1rem}.add-adhoc-form{flex-direction:column}.adhoc-actions{flex-direction:column}#monthly-fee{font-size:2.5rem}.fee-qr-container{flex-direction:column;gap:20px}#share-fee-btn{padding:15px 20px;font-size:1rem}.modal-content{width:90%;margin:10% auto;padding:15px}#roster-modal .roster-list{max-height:350px}}
 @media (min-width:1024px){.container{max-width:1280px}.main-layout{display:flex;gap:30px;align-items:flex-start}.column{flex:1}}
