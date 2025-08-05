@@ -2,17 +2,17 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebas
 import { getDatabase, ref, onValue, push, remove, set } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-database.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- 1. FIREBASE CONFIGURATION ---
-    // IMPORTANT: It's recommended to use environment variables for Firebase config in a production environment.
-    const firebaseConfig = {
-        apiKey: "AIzaSyAz4_IQg5_P67QYJ30JNDlEISacUS3e3Lc",
-        authDomain: "basketball-club-fee-manager.firebaseapp.com",
-        databaseURL: "https://basketball-club-fee-manager-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "basketball-club-fee-manager",
-        storageBucket: "basketball-club-fee-manager.appspot.com",
-        messagingSenderId: "394781234199",
-        appId: "1:394781234199:web:3d91f8b93df77bff7af852"
-    };
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyAz4_IQg5_P67QYJ30JNDlEISacUS3e3Lc",
+    authDomain: "basketball-club-fee-manager.firebaseapp.com",
+    databaseURL: "https://basketball-club-fee-manager-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "basketball-club-fee-manager",
+    storageBucket: "basketball-club-fee-manager.firebasestorage.app",
+    messagingSenderId: "394781234199",
+    appId: "1:394781234199:web:3d91f8b93df77bff7af852",
+    measurementId: "G-3JRY30DJ68"
+  };
 
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
